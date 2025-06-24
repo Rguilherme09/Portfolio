@@ -1,0 +1,24 @@
+.light-follower {
+  position: fixed;
+  width: 12px;
+  height: 12px;
+  background: #FFD700;
+  border: 2px solid #FFD700;
+  box-shadow: 0 0 8px 2px #FFD700;
+  pointer-events: none;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 9999;
+  transition: left 0.02s ease-out, top 0.02s ease-out;
+  mix-blend-mode: screen;
+}
+
+.line-svg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 9998;
+}

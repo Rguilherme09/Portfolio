@@ -1,0 +1,184 @@
+@import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400..700&family=Huninn&family=Open+Sans&family=Poppins:wght@400;700&display=swap');
+
+.topo {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 10;
+  background-color: black;
+}
+
+:global(body.light) .topo {
+  background-color: #F0F0F0;
+}
+
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 10px 20px;
+}
+
+.logo_container {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  font-family: "Dancing Script", cursive;
+  color: #FFD700;
+}
+
+.logo_container img {
+  width: 50px;
+}
+
+:global(body.light) .logo_container {
+  color: #b8860b;
+}
+
+.menu {
+  display: flex;
+  gap: 20px;
+}
+
+.menu ul {
+  display: flex;
+  list-style: none;
+  gap: 20px;
+  padding: 0;
+  margin: 0;
+}
+
+.menu a {
+  color: #FFD700;
+  font-family: "Huninn", sans-serif;
+  text-decoration: none;
+  transition: color 0.3s;
+}
+
+.menu a:hover {
+  color: snow;
+  font-weight: bold;
+}
+
+:global(body.light) .menu a {
+  color: #b8860b;
+}
+
+:global(body.light) .menu a:hover {
+  color: black;
+}
+
+.botao_tema {
+  font-size: 1.6rem;
+  background: transparent;
+  border: none;
+  color: #fff;
+  cursor: pointer;
+}
+
+:global(body.light) .botao_tema {
+  color: #000;
+}
+
+.menu_hamburguer {
+  display: none; /* esconder por padrão */
+  background: none;
+  border: none;
+  font-size: 2rem;
+  cursor: pointer;
+  position: absolute;
+  left: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #FFD700;
+  z-index: 1000;
+}
+
+:global(body.light) .menu_hamburguer {
+  color: #b8860b;
+}
+
+.menu_mobile {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 260px;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.95);
+  backdrop-filter: blur(6px);
+  padding-top: 80px;
+  z-index: 999;
+
+  transform: translateX(-100%);
+  opacity: 0;
+  pointer-events: none;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.menu_mobile.aberto {
+  transform: translateX(0);
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.menu_mobile ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  align-items: flex-start;
+  padding-left: 2rem;
+}
+
+.menu_mobile a {
+  color: #FFD700;
+  font-family: "Huninn", sans-serif;
+  font-size: 1.2rem;
+  text-decoration: none;
+}
+
+:global(body.light) .menu_mobile {
+  background-color: rgba(240, 240, 240, 0.95);
+}
+
+:global(body.light) .menu_mobile a {
+  color: #b8860b;
+}
+
+@media (max-width: 768px) {
+  .menu {
+    display: none;
+  }
+
+  .menu_hamburguer {
+    display: block; /* aparece somente em telas pequenas */
+  }
+
+  .container {
+    justify-content: center;
+    position: relative;
+  }
+
+  .logo_container {
+    margin: 0 auto;
+  }
+
+  .botao_tema {
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+
+  .icone_menu {
+  font-size: 2rem;
+  color: inherit;
+  display: block;  /* garante o ícone ocupar o espaço */
+  width: 24px;     /* tamanho fixo */
+  height: 24px;
+  }
+}

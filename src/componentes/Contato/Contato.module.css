@@ -1,0 +1,73 @@
+@import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400..700&family=Inter+Tight:ital,wght@0,100..900;1,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+.contato {
+  padding: 40px 20px;
+  max-width: 600px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.contato h2 {
+  font-size: 2.0rem;
+  margin-top: -10px;
+  margin-bottom: 60px;
+  color: #FFD700;
+  font-family: Poppins, sans-serif;
+}
+
+.formulario {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.formulario input,
+.formulario textarea {
+  padding: 10px;
+  border-radius: 5px;
+  border: none;
+  font-size: 1rem;
+  font-family: "Poppins", sans-serif;
+}
+
+.formulario textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+.formulario button {
+  padding: 10px 20px;
+  background-color: #FFD700;
+  color: black;
+  border: none;
+  border-radius: 5px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.formulario button:hover {
+  background-color: #e0c200;
+}
+
+.confirmacao {
+  color: green;
+  margin-top: 10px;
+}
+
+.caixa_formulario {
+  background-color: rgba(0, 0, 0, 0.7);
+  border-radius: 12px;
+  padding: 3rem;
+  box-shadow: 0 0 15px rgba(255, 215, 0, 0.3); /* sombra dourada leve */
+  max-width: 600px;
+  width: 100%;
+  margin: 0 auto;
+  transition: box-shadow 0.3s ease;
+}
+
+/* Modo claro */
+:global(body.light) .caixa_formulario {
+  background-color: #ffffff;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.5); /* sombra preta leve */
+}

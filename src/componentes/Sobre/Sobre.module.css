@@ -1,0 +1,69 @@
+.sobre {
+  min-height: 100vh; /* altura mínima de tela inteira */
+  padding: 100px 2rem; /* espaçamento maior acima e abaixo */
+  background-color: var(--cor-fundo);
+  box-sizing: border-box;
+  overflow: hidden; /* impede que algo “vaze” para fora */
+}
+
+.container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 3rem;
+  max-width: 1000px;
+  margin: 0 auto;
+  flex-wrap: wrap;
+  position: relative;
+}
+
+.imagem img {
+  width: 240px;
+  height: 240px;
+  object-fit: cover;
+  object-position: center 20%; /* mostra mais a parte de cima da foto */
+  border-radius: 50%;
+  border: 4px solid var(--cor-principal);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+.texto {
+  flex: 1;
+  max-width: 500px;
+}
+
+.texto h2 {
+  font-size: 2rem;
+  margin-bottom: 1.5rem;
+  color: var(--cor-texto-principal);
+}
+
+.texto p {
+  font-size: 1.1rem;
+  line-height: 1.7;
+  margin-bottom: 1rem;
+  color: var(--cor-texto-secundario);
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+  .container {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .imagem img {
+    width: 180px;
+    height: 180px;
+    margin: 0 auto;
+    display: block;
+  }
+
+  .texto {
+    max-width: 100%;
+    margin-top: 1.5rem;
+    padding-bottom: 2rem;
+  }
+
+}

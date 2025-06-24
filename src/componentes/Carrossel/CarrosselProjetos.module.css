@@ -1,0 +1,43 @@
+.carrossel {
+  padding: 4rem 2rem;
+  text-align: center;
+  max-width: 90%;
+  overflow: hidden;
+}
+
+.carrossel a {
+  text-decoration: none;
+}
+
+.carrossel h2 {
+  font-size: 2rem;
+  margin-bottom: 2rem;
+  color: #fff;
+}
+
+.carrossel :global(.swiper-pagination) {
+  position: relative;
+  margin-top: 2rem;
+}
+
+
+.imagem {
+  width: 100%;
+  max-width: 500px;
+  height: auto;
+  border-radius: 12px;
+  margin: 0 auto;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+}
+
+.imagem:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.6);
+}
+
+.titulo {
+  margin-top: 1rem;
+  font-size: 1.2rem;
+  color: #828282;
+}
