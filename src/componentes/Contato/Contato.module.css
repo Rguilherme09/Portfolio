@@ -64,15 +64,15 @@
   border-radius: 12px;
   padding: 3rem;
   box-shadow: 0 0 15px rgba(255, 215, 0, 0.3);
-  max-width: 100%;
+  max-width: 450px;
   width: 100%;
   margin: 0 auto;
   transition: box-shadow 0.3s ease;
 }
 
 .recaptchaWrapper {
-  transform: scale(0.95);
-  transform-origin: 0 0;
+  transform: scale(1.17);
+  transform-origin: 0 1;
   width: fit-content;
   margin: 0 auto;
 }
