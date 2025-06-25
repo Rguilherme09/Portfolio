@@ -9,12 +9,22 @@ export async function POST(req) {
 
   // Verificar token reCAPTCHA
   const secretKey = process.env.RECAPTCHA_SECRET_KEY;
-  const verifyUrl = `https://www.google.com/recaptcha/api/siteverify?secret=${secretKey}&response=${token}`;
+  const verifyUrl = `https://www.google.com/recaptcha/api/siteverify`;
 
-  const recaptchaRes = await fetch(verifyUrl, { method: "POST" });
+  const params = new URLSearchParams();
+  params.append("secret", secretKey);
+  params.append("response", token);
+
+  const recaptchaRes = await fetch(verifyUrl, {
+    method: "POST",
+    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+    body: params,
+  });
+
   const recaptchaJson = await recaptchaRes.json();
 
   if (!recaptchaJson.success) {
+    console.error("Falha reCAPTCHA:", recaptchaJson);
     return new Response("Falha na verificação reCAPTCHA.", { status: 400 });
   }
 
@@ -28,10 +38,16 @@ export async function POST(req) {
     });
 
     await transporter.sendMail({
-      from: `"${nome}" <${email}>`,
+      from: `"Portfólio - RodrigoDev" <${process.env.EMAIL_USER}>`,
       to: process.env.EMAIL_USER,
       subject: "Mensagem do seu portfólio",
-      text: mensagem,
+      text: `
+Nome: ${nome}
+Email: ${email}
+
+Mensagem:
+${mensagem}
+`,
     });
 
     return new Response("E-mail enviado com sucesso!", { status: 200 });
