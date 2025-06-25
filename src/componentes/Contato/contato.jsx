@@ -72,10 +72,12 @@ export default function Contato() {
               onChange={handleChange}
               required
             />
-            <ReCAPTCHA
-              sitekey="6LcKHGwrAAAAAK-anuRVv82AkQhatkcITfqxuPrf"
-              ref={recaptchaRef}
-            />
+            <div className={styles.recaptchaWrapper}>
+              <ReCAPTCHA
+                sitekey="6LcKHGwrAAAAAK-anuRVv82AkQhatkcITfqxuPrf"
+                ref={recaptchaRef}
+              />
+            </div>
             {erroCaptcha && (
               <p style={{ color: "red" }}>Por favor, confirme que não é um robô.</p>
             )}

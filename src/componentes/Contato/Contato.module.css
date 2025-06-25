@@ -70,6 +70,13 @@
   transition: box-shadow 0.3s ease;
 }
 
+.recaptchaWrapper {
+  transform: scale(0.85);
+  transform-origin: 0 0;
+  width: fit-content;
+  margin: 0 auto;
+}
+
 /* Modo claro */
 :global(body.light) .caixa_formulario {
   background-color: #ffffff;
@@ -88,5 +95,9 @@
   .formulario input,
   .formulario textarea {
     width: 100%;
+  }
+
+  .recaptchaWrapper {
+    transform: scale(0.75);
   }
 }
