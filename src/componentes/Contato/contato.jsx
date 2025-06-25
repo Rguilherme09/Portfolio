@@ -21,7 +21,9 @@ export default function Contato() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const token = recaptchaRef.current.getValue();
+    const token = await recaptchaRef.current.executeAsync();
+    recaptchaRef.current.reset();
+
     if (!token) {
       setErroCaptcha(true);
       return;
@@ -48,44 +50,83 @@ export default function Contato() {
     <section id="contato" className={styles.contato}>
       <h2>Entre em contato</h2>
       <div className={styles.caixa_formulario}>
-          <form className={styles.formulario} onSubmit={handleSubmit}>
-            <input
-              type="text"
-              name="nome"
-              placeholder="Seu nome"
-              value={formulario.nome}
-              onChange={handleChange}
-              required
+        <form className={styles.formulario} onSubmit={handleSubmit}>
+          <input
+            type="text"
+            name="nome"
+            placeholder="Seu nome"
+            value={formulario.nome}
+            onChange={handleChange}
+            required
+          />
+          <input
+            type="email"
+            name="email"
+            placeholder="Seu email"
+            value={formulario.email}
+            onChange={handleChange}
+            required
+          />
+          <textarea
+            name="mensagem"
+            placeholder="Sua mensagem"
+            value={formulario.mensagem}
+            onChange={handleChange}
+            required
+          />
+          <div className={styles.recaptchaWrapper}>
+            <ReCAPTCHA
+              sitekey="6LfsjG0rAAAAAE92kLwdhFxJHiEjrwXlIXOfF0wU"
+              size="invisible"
+              ref={recaptchaRef}
             />
-            <input
-              type="email"
-              name="email"
-              placeholder="Seu email"
-              value={formulario.email}
-              onChange={handleChange}
-              required
-            />
-            <textarea
-              name="mensagem"
-              placeholder="Sua mensagem"
-              value={formulario.mensagem}
-              onChange={handleChange}
-              required
-            />
-            <div className={styles.recaptchaWrapper}>
-              <ReCAPTCHA
-                sitekey="6LcKHGwrAAAAAK-anuRVv82AkQhatkcITfqxuPrf"
-                ref={recaptchaRef}
-              />
-            </div>
-            {erroCaptcha && (
-              <p style={{ color: "red" }}>Por favor, confirme que não é um robô.</p>
-            )}
-            <button type="submit">Enviar</button>
-            {enviado && (
-              <p className={styles.confirmacao}>Mensagem enviada com sucesso!</p>
-            )}
-          </form>
+          </div>
+          {erroCaptcha && (
+            <p style={{ color: "red" }}>
+              Por favor, confirme que não é um robô.
+            </p>
+          )}
+          <button type="submit">Enviar</button>
+          {enviado && (
+            <p className={styles.confirmacao}>Mensagem enviada com sucesso!</p>
+          )}
+          <p
+            style={{
+              fontSize: "0.75rem",
+              color: "#777",
+              marginTop: "1.5rem",
+              textAlign: "center",
+            }}
+          >
+            Este site é protegido pelo reCAPTCHA e está sujeito à
+            <a
+              href="https://policies.google.com/privacy"
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{
+                color: "#FFD700",
+                textDecoration: "none",
+                margin: "0 4px",
+              }}
+            >
+              Política de Privacidade
+            </a>
+            e aos
+            <a
+              href="https://policies.google.com/terms"
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{
+                color: "#FFD700",
+                textDecoration: "none",
+                margin: "0 4px",
+              }}
+            >
+              Termos de Serviço
+            </a>
+            do Google.
+          </p>
+        </form>
       </div>
     </section>
   );
