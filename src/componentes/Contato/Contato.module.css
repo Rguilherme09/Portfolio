@@ -72,8 +72,10 @@
 
 .recaptchaWrapper {
   transform: scale(1.17);
-  transform-origin: 0 1;
-  width: fit-content;
+  transform-origin: center;
+  display: flex;
+  justify-content: center;
+  width: 100%;
   margin: 0 auto;
 }
 
@@ -86,6 +88,7 @@
 @media (max-width: 768px) {
   .recaptchaWrapper {
     transform: scale(0.85);
+    transform-origin: center;
   }
 }
 
