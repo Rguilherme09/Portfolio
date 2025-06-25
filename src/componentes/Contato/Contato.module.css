@@ -1,10 +1,12 @@
 @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400..700&family=Inter+Tight:ital,wght@0,100..900;1,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 
 .contato {
-  padding: 40px 20px;
+  padding: 60px 20px;
   max-width: 600px;
   margin: 0 auto;
   text-align: center;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .contato h2 {
@@ -28,6 +30,8 @@
   border: none;
   font-size: 1rem;
   font-family: "Poppins", sans-serif;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .formulario textarea {
@@ -59,8 +63,8 @@
   background-color: rgba(0, 0, 0, 0.7);
   border-radius: 12px;
   padding: 3rem;
-  box-shadow: 0 0 15px rgba(255, 215, 0, 0.3); /* sombra dourada leve */
-  max-width: 600px;
+  box-shadow: 0 0 15px rgba(255, 215, 0, 0.3);
+  max-width: 100%;
   width: 100%;
   margin: 0 auto;
   transition: box-shadow 0.3s ease;
@@ -70,4 +74,19 @@
 :global(body.light) .caixa_formulario {
   background-color: #ffffff;
   box-shadow: 0 0 15px rgba(0, 0, 0, 0.5); /* sombra preta leve */
+}
+
+@media (max-width: 480px) {
+  .contato {
+    padding: 40px 15px;
+  }
+
+  .formulario {
+    width: 100%;
+  }
+
+  .formulario input,
+  .formulario textarea {
+    width: 100%;
+  }
 }
