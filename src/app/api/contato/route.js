@@ -7,20 +7,11 @@ export async function POST(req) {
     return new Response("Campos obrigatórios ausentes.", { status: 400 });
   }
 
-  // Verificar token reCAPTCHA
+  // Validação do reCAPTCHA
   const secretKey = process.env.RECAPTCHA_SECRET_KEY;
-  const verifyUrl = `https://www.google.com/recaptcha/api/siteverify`;
+  const verifyUrl = `https://www.google.com/recaptcha/api/siteverify?secret=${secretKey}&response=${token}`;
 
-  const params = new URLSearchParams();
-  params.append("secret", secretKey);
-  params.append("response", token);
-
-  const recaptchaRes = await fetch(verifyUrl, {
-    method: "POST",
-    headers: { "Content-Type": "application/x-www-form-urlencoded" },
-    body: params,
-  });
-
+  const recaptchaRes = await fetch(verifyUrl, { method: "POST" });
   const recaptchaJson = await recaptchaRes.json();
 
   if (!recaptchaJson.success) {
@@ -38,16 +29,10 @@ export async function POST(req) {
     });
 
     await transporter.sendMail({
-      from: `"Portfólio - RodrigoDev" <${process.env.EMAIL_USER}>`,
+      from: `"${nome}" <${email}>`,
       to: process.env.EMAIL_USER,
       subject: "Mensagem do seu portfólio",
-      text: `
-Nome: ${nome}
-Email: ${email}
-
-Mensagem:
-${mensagem}
-`,
+      text: mensagem,
     });
 
     return new Response("E-mail enviado com sucesso!", { status: 200 });
