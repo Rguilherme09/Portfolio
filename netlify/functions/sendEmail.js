@@ -1,7 +1,13 @@
-const nodemailer = require("nodemailer");
-const fetch = require("node-fetch");
+import nodemailer from "nodemailer";
 
-exports.handler = async (event) => {
+export async function handler(event) {
+  if (event.httpMethod !== "POST") {
+    return {
+      statusCode: 405,
+      body: "Método não permitido",
+    };
+  }
+
   const { nome, email, mensagem, token } = JSON.parse(event.body);
 
   if (!nome || !email || !mensagem || !token) {
@@ -11,6 +17,7 @@ exports.handler = async (event) => {
     };
   }
 
+  // Verificar token reCAPTCHA
   const secretKey = process.env.RECAPTCHA_SECRET_KEY;
   const verifyUrl = `https://www.google.com/recaptcha/api/siteverify?secret=${secretKey}&response=${token}`;
 
@@ -51,4 +58,4 @@ exports.handler = async (event) => {
       body: "Erro ao enviar e-mail.",
     };
   }
-};
+}
