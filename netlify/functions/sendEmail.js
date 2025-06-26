@@ -1,61 +1,60 @@
-import nodemailer from "nodemailer";
+const nodemailer = require('nodemailer');
+const fetch = require('node-fetch'); // necessário para reCAPTCHA
 
-export async function handler(event) {
-  if (event.httpMethod !== "POST") {
-    return {
-      statusCode: 405,
-      body: "Método não permitido",
-    };
-  }
-
-  const { nome, email, mensagem, token } = JSON.parse(event.body);
-
-  if (!nome || !email || !mensagem || !token) {
-    return {
-      statusCode: 400,
-      body: "Campos obrigatórios ausentes.",
-    };
-  }
-
-  // Verificar token reCAPTCHA
-  const secretKey = process.env.RECAPTCHA_SECRET_KEY;
-  const verifyUrl = `https://www.google.com/recaptcha/api/siteverify?secret=${secretKey}&response=${token}`;
-
-  const recaptchaRes = await fetch(verifyUrl, { method: "POST" });
-  const recaptchaJson = await recaptchaRes.json();
-
-  if (!recaptchaJson.success) {
-    return {
-      statusCode: 400,
-      body: "Falha na verificação reCAPTCHA.",
-    };
+exports.handler = async function(event) {
+  if (event.httpMethod !== 'POST') {
+    return { statusCode: 405, body: 'Method Not Allowed' };
   }
 
   try {
+    const data = JSON.parse(event.body);
+    const { nome, email, mensagem, recaptchaToken } = data;
+
+    // Validação do reCAPTCHA
+    const secret = process.env.RECAPTCHA_SECRET_KEY;
+    const recaptchaRes = await fetch(`https://www.google.com/recaptcha/api/siteverify`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: `secret=${secret}&response=${recaptchaToken}`,
+    });
+
+    const recaptchaJson = await recaptchaRes.json();
+
+    if (!recaptchaJson.success) {
+      return {
+        statusCode: 400,
+        body: JSON.stringify({ message: 'Falha na verificação do reCAPTCHA.' }),
+      };
+    }
+
+    // Configurar o transporte SMTP
     const transporter = nodemailer.createTransport({
-      service: "gmail",
+      host: 'smtp.gmail.com',
+      port: 465,
+      secure: true,
       auth: {
         user: process.env.EMAIL_USER,
         pass: process.env.EMAIL_PASS,
       },
     });
 
-    await transporter.sendMail({
+    const mailOptions = {
       from: `"${nome}" <${email}>`,
       to: process.env.EMAIL_USER,
-      subject: "Mensagem do seu portfólio",
+      subject: 'Mensagem do Portfólio',
       text: mensagem,
-    });
+    };
+
+    await transporter.sendMail(mailOptions);
 
     return {
       statusCode: 200,
-      body: "E-mail enviado com sucesso!",
+      body: JSON.stringify({ message: 'Email enviado com sucesso!' }),
     };
   } catch (error) {
-    console.error("Erro ao enviar e-mail:", error);
     return {
       statusCode: 500,
-      body: "Erro ao enviar e-mail.",
+      body: JSON.stringify({ message: 'Erro ao enviar email', error: error.toString() }),
     };
   }
-}
+};  
