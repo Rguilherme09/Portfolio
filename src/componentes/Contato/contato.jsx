@@ -76,7 +76,7 @@ export default function Contato() {
           />
           <div className={styles.recaptchaWrapper}>
             <ReCAPTCHA
-              sitekey="6LfsjG0rAAAAAE92kLwdhFxJHiEjrwXlIXOfF0wU"
+              sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY}
               size="invisible"
               ref={recaptchaRef}
             />
