@@ -19,36 +19,43 @@ export default function Contato() {
   };
 
   const handleSubmit = async (e) => {
-  e.preventDefault();
+    e.preventDefault();
 
-  const token = await recaptchaRef.current.executeAsync();
-  recaptchaRef.current.reset();
+    const token = await recaptchaRef.current.executeAsync();
+    recaptchaRef.current.reset();
 
-  if (!token) {
-    setErroCaptcha(true);
-    return;
-  }
-  setErroCaptcha(false);
+    if (!token) {
+      setErroCaptcha(true);
+      return;
+    }
+    setErroCaptcha(false);
 
-  const res = await fetch("/.netlify/functions/sendEmail", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      nome: formulario.nome,
-      email: formulario.email,
-      mensagem: formulario.mensagem,
-      recaptchaToken: token,
-    }),
-  });
+    const res = await fetch("/.netlify/functions/sendEmail", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        nome: formulario.nome,
+        email: formulario.email,
+        mensagem: formulario.mensagem,
+        recaptchaToken: token,
+      }),
+    });
 
-  if (res.ok) {
-    setEnviado(true);
-    setFormulario({ nome: "", email: "", mensagem: "" });
-    setTimeout(() => setEnviado(false), 5000);
-  } else {
-    alert("Erro ao enviar mensagem.");
-  }
-};
+    if (res.ok) {
+      setEnviado(true);
+      setFormulario({ nome: "", email: "", mensagem: "" });
+      setTimeout(() => setEnviado(false), 5000);
+    } else {
+      const errorData = await res.json().catch(() => null);
+
+      console.error("Erro retornado da função:", errorData);
+      alert(
+        errorData?.message
+          ? `Erro ao enviar mensagem: ${errorData.message}`
+          : "Erro desconhecido ao enviar mensagem."
+      );
+    }
+  };
 
   return (
     <section id="contato" className={styles.contato}>
