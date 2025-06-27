@@ -42,11 +42,18 @@ export default function Contato() {
         }),
       });
 
+      console.log("Resposta status:", res.status);
+      const textoResposta = await res.text();
+      console.log("Resposta body:", textoResposta);
+
       if (!res.ok) {
-        const errorData = await res.json().catch(() => null);
-        alert(
-          "Erro ao enviar mensagem: " + (errorData?.message || res.statusText)
-        );
+        let errorMessage = textoResposta;
+        try {
+          const errorData = JSON.parse(textoResposta);
+          errorMessage = errorData.message || errorMessage;
+        } catch {}
+
+        alert("Erro ao enviar mensagem: " + errorMessage);
         return;
       }
 
