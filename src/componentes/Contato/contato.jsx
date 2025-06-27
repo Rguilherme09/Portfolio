@@ -30,30 +30,31 @@ export default function Contato() {
     }
     setErroCaptcha(false);
 
-    const res = await fetch("/.netlify/functions/sendEmail", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        nome: formulario.nome,
-        email: formulario.email,
-        mensagem: formulario.mensagem,
-        recaptchaToken: token,
-      }),
-    });
+    try {
+      const res = await fetch("/.netlify/functions/sendEmail", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          nome: formulario.nome,
+          email: formulario.email,
+          mensagem: formulario.mensagem,
+          recaptchaToken: token,
+        }),
+      });
 
-    if (res.ok) {
+      if (!res.ok) {
+        const errorData = await res.json().catch(() => null);
+        alert(
+          "Erro ao enviar mensagem: " + (errorData?.message || res.statusText)
+        );
+        return;
+      }
+
       setEnviado(true);
       setFormulario({ nome: "", email: "", mensagem: "" });
       setTimeout(() => setEnviado(false), 5000);
-    } else {
-      const errorData = await res.json().catch(() => null);
-
-      console.error("Erro retornado da função:", errorData);
-      alert(
-        errorData?.message
-          ? `Erro ao enviar mensagem: ${errorData.message}`
-          : "Erro desconhecido ao enviar mensagem."
-      );
+    } catch (err) {
+      alert("Erro desconhecido ao enviar mensagem: " + err.message);
     }
   };
 
