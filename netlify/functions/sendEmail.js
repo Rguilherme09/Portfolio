@@ -1,4 +1,4 @@
-require("dotenv").config();
+require('dotenv').config();
 
 console.log("🟡 EMAIL_USER:", process.env.EMAIL_USER);
 console.log("🟡 EMAIL_PASS:", process.env.EMAIL_PASS);
@@ -6,10 +6,6 @@ console.log("🟡 RECAPTCHA_SECRET_KEY:", process.env.RECAPTCHA_SECRET_KEY);
 
 const nodemailer = require("nodemailer");
 const fetch = require("node-fetch"); // necessário para reCAPTCHA
-
-EMAIL_USER: undefined;
-EMAIL_PASS: undefined;
-RECAPTCHA_SECRET_KEY: undefined;
 
 exports.handler = async function (event) {
   if (event.httpMethod !== "POST") {

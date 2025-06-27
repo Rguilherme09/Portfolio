@@ -58,6 +58,8 @@ export default function Contato() {
     }
   };
 
+  console.log("🔹 sitekey:", process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY);
+
   return (
     <section id="contato" className={styles.contato}>
       <h2>Entre em contato</h2>
