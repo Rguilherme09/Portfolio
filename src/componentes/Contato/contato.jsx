@@ -33,7 +33,12 @@ export default function Contato() {
     const res = await fetch("/.netlify/functions/sendEmail", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ ...formulario, recaptchaToken: token }),
+      body: JSON.stringify({
+        nome,
+        email,
+        mensagem,
+        recaptchaToken: token, // O token do reCAPTCHA invisível
+      }),
     });
 
     if (res.ok) {
