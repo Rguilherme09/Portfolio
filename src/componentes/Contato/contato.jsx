@@ -22,7 +22,7 @@ export default function Contato() {
     e.preventDefault();
 
     const token = await recaptchaRef.current.executeAsync();
-    recaptchaRef.current.reset();
+    console.log("Token reCAPTCHA gerado:", token);
 
     if (!token) {
       setErroCaptcha(true);
