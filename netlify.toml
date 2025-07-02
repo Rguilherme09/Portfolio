@@ -1,9 +1,7 @@
 [build]
   command = "npm run build"
-  publish = "out"  # ou ".next/static" se for Next.js puro, mas o ideal é "out" com `next export`
-
-[functions]
-  directory = "netlify/functions"
+  publish = "out"  # não use ".next"
+  functions = "netlify/functions"
 
 [[plugins]]
   package = "@netlify/plugin-nextjs"
