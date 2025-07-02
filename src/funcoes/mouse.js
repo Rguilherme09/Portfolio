@@ -1,14 +1,21 @@
 "use client";
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, useState as useIsMountedState } from "react";
 import "./mouse.css";
 
 export default function LightFollowTrailPath({ tema }) {
   const [pos, setPos] = useState({ x: 0, y: 0 });
   const [trail, setTrail] = useState([]);
+  const [isDesktop, setIsDesktop] = useState(false); // 👈 controle por dispositivo
   const maxTrail = 2;
   const timeoutRef = useRef(null);
 
   useEffect(() => {
+    // Detecta se é desktop (ponteiro fino)
+    const desktop = window.matchMedia("(pointer: fine)").matches;
+    setIsDesktop(desktop);
+
+    if (!desktop) return; // 👈 se não for desktop, não ativa o efeito
+
     const handleMove = (e) => {
       const newPos = { x: e.clientX, y: e.clientY };
       setPos(newPos);
@@ -31,6 +38,8 @@ export default function LightFollowTrailPath({ tema }) {
       clearTimeout(timeoutRef.current);
     };
   }, []);
+
+  if (!isDesktop) return null; // 👈 não renderiza nada no mobile
 
   const pathD = trail.length
     ? trail.reduce(
@@ -57,19 +66,19 @@ export default function LightFollowTrailPath({ tema }) {
       </svg>
 
       <div
-  className="light-follower"
-  style={{
-    left: pos.x,
-    top: pos.y,
-    background: tema === "light" ? "#000" : "#FFD700",
-    borderColor: tema === "light" ? "#000" : "#FFD700",
-    boxShadow:
-      tema === "light"
-        ? "0 0 8px 2px rgba(0, 0, 0, 0.5)"
-        : "0 0 8px 2px #FFD700",
-    mixBlendMode: tema === "light" ? "normal" : "screen",
-  }}
-/>
+        className="light-follower"
+        style={{
+          left: pos.x,
+          top: pos.y,
+          background: tema === "light" ? "#000" : "#FFD700",
+          borderColor: tema === "light" ? "#000" : "#FFD700",
+          boxShadow:
+            tema === "light"
+              ? "0 0 8px 2px rgba(0, 0, 0, 0.5)"
+              : "0 0 8px 2px #FFD700",
+          mixBlendMode: tema === "light" ? "normal" : "screen",
+        }}
+      />
     </>
   );
 }
