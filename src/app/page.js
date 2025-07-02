@@ -14,7 +14,7 @@ export default function Home() {
     if (window.innerWidth <= 768) {
       setMostrarSecoes(false);
 
-      const timeout = setTimeout(() => setMostrarSecoes(true), 6000);
+      const timeout = setTimeout(() => setMostrarSecoes(true), 1000);
 
       const onScroll = () => setMostrarSecoes(true);
 
