@@ -7,11 +7,6 @@ import Sobre from "@/componentes/Sobre/sobre.jsx";
 import Habilidades from "@/componentes/Habilidades/habilidades.jsx";
 import Contato from "@/componentes/Contato/contato.jsx";
 
-export const metadata = {
-  title: "RodrigoDev",
-  description: "Portfólio de RodrigoDev - Desenvolvedor Web",
-};
-
 export default function Home() {
   const [mostrarSecoes, setMostrarSecoes] = useState(true);
 
