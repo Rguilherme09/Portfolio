@@ -31,16 +31,19 @@ export default function Contato() {
     setErroCaptcha(false);
 
     try {
-      const res = await fetch("/.netlify/functions/sendEmail", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          nome: formulario.nome,
-          email: formulario.email,
-          mensagem: formulario.mensagem,
-          recaptchaToken: token,
-        }),
-      });
+      const res = await fetch(
+        "https://portfolio-rodrigodev.netlify.app/.netlify/functions/sendEmail",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            nome: formulario.nome,
+            email: formulario.email,
+            mensagem: formulario.mensagem,
+            recaptchaToken: token,
+          }),
+        }
+      );
 
       console.log("Resposta status:", res.status);
       const textoResposta = await res.text();
