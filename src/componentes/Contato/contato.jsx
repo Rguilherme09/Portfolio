@@ -21,31 +21,30 @@ export default function Contato() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const token = await recaptchaRef.current.executeAsync();
-    console.log("Token reCAPTCHA gerado:", token);
-
-    if (!token) {
-      setErroCaptcha(true);
-      return;
-    }
-    setErroCaptcha(false);
-
     try {
-      const res = await fetch(
-        "https://portfolio-rodrigodev.netlify.app/.netlify/functions/sendEmail",
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            nome: formulario.nome,
-            email: formulario.email,
-            mensagem: formulario.mensagem,
-            recaptchaToken: token,
-          }),
-        }
-      );
+      // Gera o token reCAPTCHA
+      const token = await recaptchaRef.current.executeAsync();
+      console.log("Token reCAPTCHA gerado:", token);
 
-      // 👇 Logs para análise no navegador (DevTools)
+      if (!token) {
+        setErroCaptcha(true);
+        alert("Por favor, confirme que não é um robô.");
+        return;
+      }
+      setErroCaptcha(false);
+
+      // Chamada para a função serverless, usando URL relativa
+      const res = await fetch("/.netlify/functions/sendEmail", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          nome: formulario.nome,
+          email: formulario.email,
+          mensagem: formulario.mensagem,
+          recaptchaToken: token,
+        }),
+      });
+
       console.log("🔍 Resposta fetch:", res);
       console.log("Resposta status:", res.status);
       const textoResposta = await res.text();
@@ -66,6 +65,7 @@ export default function Contato() {
       setFormulario({ nome: "", email: "", mensagem: "" });
       setTimeout(() => setEnviado(false), 5000);
     } catch (err) {
+      console.error("Erro desconhecido ao enviar mensagem:", err);
       alert("Erro desconhecido ao enviar mensagem: " + err.message);
     }
   };
