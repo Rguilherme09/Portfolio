@@ -1,3 +1,5 @@
+"use client";
+
 import { useState, useEffect } from "react";
 import styles from "./page.module.css";
 import CarrosselProjetos from "@/componentes/Carrossel/CarrosselProjetos.jsx";
