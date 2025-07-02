@@ -45,6 +45,8 @@ export default function Contato() {
         }
       );
 
+      // 👇 Logs para análise no navegador (DevTools)
+      console.log("🔍 Resposta fetch:", res);
       console.log("Resposta status:", res.status);
       const textoResposta = await res.text();
       console.log("Resposta body:", textoResposta);
