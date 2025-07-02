@@ -12,6 +12,7 @@ export default function Contato() {
   });
   const [enviado, setEnviado] = useState(false);
   const [erroCaptcha, setErroCaptcha] = useState(false);
+  const [carregando, setCarregando] = useState(false);
   const recaptchaRef = useRef();
 
   const handleChange = (e) => {
@@ -20,35 +21,34 @@ export default function Contato() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setCarregando(true);
 
     try {
-      // Gera o token reCAPTCHA
       const token = await recaptchaRef.current.executeAsync();
       console.log("Token reCAPTCHA gerado:", token);
 
       if (!token) {
         setErroCaptcha(true);
-        alert("Por favor, confirme que não é um robô.");
+        setCarregando(false);
         return;
       }
       setErroCaptcha(false);
 
-      // Chamada para a função serverless, usando URL relativa
-      const res = await fetch("/.netlify/functions/sendEmail", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          nome: formulario.nome,
-          email: formulario.email,
-          mensagem: formulario.mensagem,
-          recaptchaToken: token,
-        }),
-      });
+      const res = await fetch(
+        "https://portfolio-rodrigodev.netlify.app/.netlify/functions/sendEmail",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            nome: formulario.nome,
+            email: formulario.email,
+            mensagem: formulario.mensagem,
+            recaptchaToken: token,
+          }),
+        }
+      );
 
-      console.log("🔍 Resposta fetch:", res);
-      console.log("Resposta status:", res.status);
       const textoResposta = await res.text();
-      console.log("Resposta body:", textoResposta);
 
       if (!res.ok) {
         let errorMessage = textoResposta;
@@ -65,12 +65,11 @@ export default function Contato() {
       setFormulario({ nome: "", email: "", mensagem: "" });
       setTimeout(() => setEnviado(false), 5000);
     } catch (err) {
-      console.error("Erro desconhecido ao enviar mensagem:", err);
       alert("Erro desconhecido ao enviar mensagem: " + err.message);
+    } finally {
+      setCarregando(false);
     }
   };
-
-  console.log("🔹 sitekey:", process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY);
 
   return (
     <section id="contato" className={styles.contato}>
@@ -112,10 +111,22 @@ export default function Contato() {
               Por favor, confirme que não é um robô.
             </p>
           )}
-          <button type="submit">Enviar</button>
+
+          <button type="submit" disabled={carregando}>
+            {carregando ? (
+              <>
+                Enviando...
+                <span className="styles.spinner"></span>
+              </>
+            ) : (
+              "Enviar"
+            )}
+          </button>
+
           {enviado && (
             <p className={styles.confirmacao}>Mensagem enviada com sucesso!</p>
           )}
+
           <p
             style={{
               fontSize: "0.75rem",

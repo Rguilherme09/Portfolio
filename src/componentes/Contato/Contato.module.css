@@ -79,6 +79,25 @@
   margin: 0 auto;
 }
 
+/* Estilo do spinner */
+.spinner {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  border: 2px solid #fff;
+  border-top-color: transparent;
+  border-radius: 50%;
+  animation: spin 0.6s linear infinite;
+  vertical-align: middle;
+  margin-left: 8px;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
 /* Modo claro */
 :global(body.light) .caixa_formulario {
   background-color: #ffffff;
