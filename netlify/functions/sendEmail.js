@@ -1,11 +1,7 @@
 require('dotenv').config();
 
-console.log("🟡 EMAIL_USER:", process.env.EMAIL_USER);
-console.log("🟡 EMAIL_PASS:", process.env.EMAIL_PASS);
-console.log("🟡 RECAPTCHA_SECRET_KEY:", process.env.RECAPTCHA_SECRET_KEY);
-
 const nodemailer = require("nodemailer");
-const fetch = require("node-fetch"); // necessário para reCAPTCHA
+const fetch = require("node-fetch");
 
 exports.handler = async function (event) {
   if (event.httpMethod !== "POST") {
@@ -16,19 +12,18 @@ exports.handler = async function (event) {
     const data = JSON.parse(event.body);
     const { nome, email, mensagem, recaptchaToken } = data;
 
-    console.log("🔹 Dados recebidos:", data);
-
-    // Verificação de variáveis de ambiente
-    console.log("🔹 Variáveis:");
-    console.log("  EMAIL_USER:", process.env.EMAIL_USER);
-    console.log("  EMAIL_PASS:", process.env.EMAIL_PASS);
-    console.log("  RECAPTCHA_SECRET_KEY:", process.env.RECAPTCHA_SECRET_KEY);
+    // Verifica se os dados obrigatórios existem
+    if (!nome || !email || !mensagem || !recaptchaToken) {
+      return {
+        statusCode: 400,
+        body: JSON.stringify({ message: "Dados incompletos enviados." }),
+      };
+    }
 
     // Validação do reCAPTCHA
     const secret = process.env.RECAPTCHA_SECRET_KEY;
     if (!secret) throw new Error("RECAPTCHA_SECRET_KEY não está definida!");
 
-    console.log("🔹 Fazendo verificação reCAPTCHA...");
     const recaptchaRes = await fetch(
       `https://www.google.com/recaptcha/api/siteverify`,
       {
@@ -39,7 +34,6 @@ exports.handler = async function (event) {
     );
 
     const recaptchaJson = await recaptchaRes.json();
-    console.log("🔹 Resultado reCAPTCHA:", recaptchaJson);
 
     if (!recaptchaJson.success) {
       return {
@@ -48,8 +42,7 @@ exports.handler = async function (event) {
       };
     }
 
-    console.log("🔹 Preparando envio de email...");
-
+    // Configuração do transporter nodemailer
     const transporter = nodemailer.createTransport({
       host: "smtp.gmail.com",
       port: 465,
@@ -60,18 +53,22 @@ exports.handler = async function (event) {
       },
     });
 
+    // Opções do email, incluindo nome e email no corpo
     const mailOptions = {
-      from: `"${nome}" <${email}>`,
+      from: process.env.EMAIL_USER,
       to: process.env.EMAIL_USER,
-      subject: "Mensagem do Portfólio",
-      text: mensagem,
+      subject: `Mensagem do Portfólio - ${nome}`,
+      text: `
+Nome: ${nome}
+Email: ${email}
+
+Mensagem:
+${mensagem}
+      `,
+      replyTo: email,
     };
 
-    console.log("🔹 Enviando email...");
-
     await transporter.sendMail(mailOptions);
-
-    console.log("✅ Email enviado com sucesso!");
 
     return {
       statusCode: 200,
@@ -84,7 +81,6 @@ exports.handler = async function (event) {
       body: JSON.stringify({
         message: "Erro ao enviar email",
         error: error.message || error.toString(),
-        stack: error.stack, // 👈 adiciona a stack trace
       }),
     };
   }
