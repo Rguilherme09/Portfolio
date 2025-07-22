@@ -40,6 +40,7 @@
   letter-spacing: 2px;
   color: #FFD700;
   margin: 0;
+  margin-top: 9rem;
   max-width: 600px;
 }
 
@@ -51,6 +52,25 @@
   font-family: "Open Sans", sans-serif;
   max-width: 600px;
   letter-spacing: 1px;
+}
+
+.primeira_secao .botao_cv {
+  margin-top: 4rem;
+  padding: 10px 20px;
+  background-color: #FFD700;
+  color: #000;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  font-size: 1rem;
+  text-decoration: none;
+  transition: background 0.3s, transform 0.2s;
+}
+
+.primeira_secao .botao_cv:hover {
+  background-color: #e0c200;
+  transform: scale(1.05);
 }
 /* Imagem de fundo com efeito visual e sem cortar */
 .primeira_secao::before {

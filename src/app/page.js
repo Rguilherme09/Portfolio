@@ -38,6 +38,9 @@ export default function Home() {
         <p className={styles.slogan}>
           Desenvolvedor Front-End | Next.js | React.js | Node.js
         </p>
+        <a href="/Currículo_Rodrigo.pdf" download className={styles.botao_cv}>
+          Baixar CV
+        </a>
       </section>
 
       {mostrarSecoes && (
