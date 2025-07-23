@@ -56,12 +56,14 @@
 
 .primeira_secao .botao_cv {
   margin-top: 4rem;
-  padding: 10px 20px;
+  padding: 10px 25px;
   background-color: #FFD700;
+  box-shadow: 0 0 15px rgba(255, 254, 254, 0.368);
   color: #000;
   border: none;
-  border-radius: 8px;
-  font-weight: bold;
+  border-radius: 20px;
+  font-family: "Poppins", sans-serif;
+  font-weight: 500;
   cursor: pointer;
   font-size: 1rem;
   text-decoration: none;

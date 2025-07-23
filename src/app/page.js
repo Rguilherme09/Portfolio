@@ -39,7 +39,7 @@ export default function Home() {
           Desenvolvedor Front-End | Next.js | React.js | Node.js
         </p>
         <a href="/Currículo_Rodrigo.pdf" download className={styles.botao_cv}>
-          Baixar CV
+          Download CV
         </a>
       </section>
 
